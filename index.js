@@ -13,6 +13,7 @@ var http = require('http'),
 
 var db = mysql.createConnection(options);
 
+app.use(express.static('static'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(function(request, response, next) {
@@ -27,18 +28,20 @@ app.get('/', function(appGetRequest, appGetResponse) {
 
 app.get('/user/:username', function(appGetRequest, appGetResponse) {
     // Returns all projects by a user
-    db.query('SELECT * FROM projects WHERE username = \'' + appGetRequest.params.username + '\'', function(err, rows, fields) {
+    db.query('SELECT * FROM projects WHERE username = \'' + appGetRequest.params.username + '\' ORDER BY projectName', function(err, rows, fields) {
         if (err) throw err;
-        var html = '<html><body>';
+        var html = '<html><head><link rel="stylesheet" type="text/css" href="../style.css"></head><body><h1>Projects by ' + appGetRequest.params.username + '</h1>';
         rows.forEach(function(eachProject) {
             html 
-                += '<a href="http://beetleblocks.com/run/#present:Username=' 
+                += '<a target="_blank" href="http://beetleblocks.com/run/#present:Username=' 
                 + appGetRequest.params.username 
                 + '&ProjectName=' + eachProject.projectName 
-                + '"><img alt="' + eachProject.projectName 
-                + '" src="' + eachProject.thumbnail + '"></a>'
+                + '"><div class="project"><img width="160" height="120" alt="' + eachProject.projectName 
+                + '" src="' + eachProject.thumbnail + '"><p>'
+                + eachProject.projectName + '</p></div></a>'
         });
         html += '</body></html>';
+	appGetResponse.send(html);
     });
 });
 

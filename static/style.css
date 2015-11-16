@@ -1,0 +1,26 @@
+body {
+   font-family: Verdana, Geneva, sans-serif;
+   color: #111;
+   background: #FAFAFA;
+}
+
+.project {
+   border-radius: 3px;
+   background: #DDD;
+   border: 1px solid #CCC;
+   margin: 2px;
+   display: inline-block;
+   padding: 2px;
+   line-height: 0;
+   text-align: center;
+}
+
+.project p {
+   color: #333;
+   text-decoration: none;
+}
+
+.project:hover {
+   background: #BBB;
+   color: #444;
+}
