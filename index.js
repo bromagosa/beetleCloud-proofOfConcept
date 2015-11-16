@@ -15,6 +15,11 @@ var db = mysql.createConnection(options);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(function(request, response, next) {
+    response.setHeader('Access-Control-Allow-Origin', 'http://beetleblocks.com');
+    response.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    next();
+});
 
 app.get('/', function(appGetRequest, appGetResponse) {
     appGetResponse.send('BeetleCloud');
@@ -34,7 +39,6 @@ app.post('/project', function(appPostRequest, appPostResponse) {
     var dbObject = {
         username: appPostRequest.body.username,
         projectName: appPostRequest.body.projectName,
-        projectURL: appPostRequest.body.projectURL,
         thumbnail: appPostRequest.body.thumbnail
     };
 
@@ -44,10 +48,9 @@ app.post('/project', function(appPostRequest, appPostResponse) {
             throw(err);
             console.error(err);
         } else {
-            appPostResponse.send('entry added');
+            appPostResponse.send('OK');
         }
     });
-
 });
 
 httpServer.listen(9999);
