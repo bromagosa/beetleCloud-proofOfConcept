@@ -4,6 +4,19 @@ body {
    background: #FAFAFA;
 }
 
+a {
+   color: #333;
+   text-decoration: none;
+}
+
+a:hover {
+   color: #666;
+}
+
+a.back {
+   display: block;
+}
+
 .project {
    border-radius: 3px;
    background: #DDD;
@@ -11,16 +24,34 @@ body {
    margin: 2px;
    display: inline-block;
    padding: 2px;
-   line-height: 0;
    text-align: center;
 }
 
 .project p {
    color: #333;
    text-decoration: none;
+   overflow: hidden;
+   width: 164px;
+   height: 18px;
+   text-overflow: ellipsis;
+   white-space: nowrap;
+   margin: 7px 0 5px 0;
 }
 
 .project:hover {
    background: #BBB;
-   color: #444;
+   border: 1px solid #AAA;
+   color: #666;
+}
+
+.project p:hover {
+   color: #666;
+}
+
+.users {
+   line-height: 4px;
+}
+
+.users a:hover {
+   font-weight: bold;
 }
