@@ -1,0 +1,7 @@
+!! Remove this line, set the parameters according to your setup, and rename this file as db.json !!
+{
+    "host": "localhost",
+    "user": "db_user",
+    "password": "db_password",
+    "database": "db_name"
+}
