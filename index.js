@@ -4,9 +4,9 @@ var http = require('http'),
     mysql = require('mysql'),
     bodyParser = require('body-parser'),
     httpServer = http.Server(app),
-    options = require('fs').readFileSync('db.json');
+    options = require('fs').readFileSync('db.json', 'utf-8');
 
-var db = mysql.createConnection(options);
+var db = mysql.createConnection(JSON.parse(options));
 
 app.use(express.static('static'));
 app.use(bodyParser.json());
