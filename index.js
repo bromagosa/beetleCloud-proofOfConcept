@@ -29,7 +29,10 @@ app.get('/user/:username', function(appGetRequest, appGetResponse) {
             + '\' ORDER BY projectName',
             function(err, rows, fields) {
 
-                if (err) throw err;
+		if (err) {
+	    		console.error(err);
+			return;
+		}
 
                 var html = 
                     '<html><head><link rel="stylesheet" type="text/css" href="../style.css"></head><body><h1>Projects by ' 
@@ -60,7 +63,10 @@ app.get('/users', function(appGetRequest, appGetResponse) {
             'SELECT username, COUNT(*) AS projectCount FROM projects GROUP BY username ORDER BY username',
             function(err, rows, fields) {
 
-                if (err) throw err;
+		if (err) {
+	    		console.error(err);
+			return;
+		}
 
                 var html = 
                     '<html><head><link rel="stylesheet" type="text/css" href="../style.css">'
@@ -103,12 +109,6 @@ app.post('/delete-project', function(appPostRequest, appPostResponse) {
 
 nop = function() {};
 
-dealWithError = function(err) {
-    if (err) {
-        throw(err);
-        console.error(err);
-    }
-}
 
 ifProjectExists = function(username, projectName, thumbnail, ifTrue, ifFalse) {
     db.query(
@@ -116,7 +116,10 @@ ifProjectExists = function(username, projectName, thumbnail, ifTrue, ifFalse) {
             + '\' AND projectName=\'' + projectName + '\'', 
             function(err, rows, fields) {
 
-                dealWithError(err);
+		if (err) {
+	    		console.error(err);
+			return;
+		}
 
                 if (rows[0].count > 0) {
                     ifTrue(username, projectName, thumbnail);
@@ -133,7 +136,9 @@ updateProject = function(username, projectName, thumbnail) {
             'UPDATE projects SET thumbnail=\'' + thumbnail 
             + '\' WHERE username=\'' + username 
             + '\' AND projectName=\'' + projectName + '\'',
-            dealWithError
+            function(err) {
+		if (err) { console.log(err) }
+	    }
             );
 }
 
@@ -145,7 +150,9 @@ insertProject = function(username, projectName, thumbnail) {
                 projectName: projectName,
                 thumbnail: thumbnail
             },
-            dealWithError
+            function(err) {
+		if (err) { console.log(err) }
+	    }
             );
 }
 
@@ -153,8 +160,16 @@ deleteProject = function(username, projectName) {
     db.query(
             'DELETE FROM projects WHERE username=\'' + username 
             + '\' AND projectName=\'' + projectName + '\'',
-            dealWithError
+            function(err) {
+		if (err) { console.log(err) }
+	    }
             );
 }
+
+// dirty keepAlive
+
+setInterval(function () {
+    db.query('SELECT 1');
+}, 5000);
 
 httpServer.listen(9999);
